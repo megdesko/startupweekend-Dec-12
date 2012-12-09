@@ -45,14 +45,9 @@ echo '
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           <a class="brand" href="#">
-			<img src="./images/HoneyCombLight.png" 
-			width="25%" height="25%"/>
+			<img src="./images/honeycomb_light_long.png" 
+			width="10%" height="10%"/>
 			</a>
           <div class="nav-collapse collapse">
             <ul class="nav">';
@@ -60,7 +55,7 @@ foreach ($menuItems as $row) {
 	// if strpos then do this
 	// doing it this way because PHP gives weird false positives
 	if (strpos($row['url'], 'username') !== FALSE) {
-	$row['url'] = str_replace('username',$_SESSION['username'], $row['url']);
+	$row['url'] = str_replace('username',$_REQUEST['sessionusername'], $row['url']);
 	}
 	if (strpos($_SERVER['SCRIPT_FILENAME'], $row['base_name']) !== FALSE) {
 		echo '<li class="active" ><a href="'.$row['url'].'">'.$row['menu_name'].'</a></li>';

@@ -25,7 +25,7 @@ function setGravURL($row) {
 			md5(strtolower(trim('mdesko@gmail.com')));
 	$size = 120;
 	$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
-			trim ($email))) . "?d=" . urlencode($default) . "&s=" . $size;
+			trim ($email))) . "?s=" . $size;
 	return $url;
 }
 

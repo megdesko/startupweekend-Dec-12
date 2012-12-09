@@ -8,7 +8,7 @@ function __construct() {
 }
 function setUserRow() {
 	$sql = 'SELECT * FROM user WHERE 
-			username = "'.$_SESSION['username'].'"';
+			username = "'.$_REQUEST['sessionusername'].'"';
 	$result = mysql_query($sql);
 	$row = mysql_fetch_assoc($result);
 	return $row;
@@ -24,7 +24,9 @@ function setGravURL($row) {
 			md5(strtolower(trim('mdesko@gmail.com')));
 	$size = 120;
 	$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
-			trim ($email))) . "?d=" . urlencode($default) . "&s=" . $size;
+			trim ($email))) . "?s=" . $size;
+	//$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
+	//		trim ($email))) . "?d=" . urlencode($default) . "&s=" . $size;
 	return $url;
 }
 
@@ -85,7 +87,8 @@ function printMatches() {
 			 <h4>'.$row['username'].'</h4>
 		
           <p>'.$row['about_me'].'</p>
-          <p><a class="btn" href="./profile.php?user='.$row['username'].'">View
+          <p><a class="btn"
+href="./profile.php?user='.$row['username'].'&sessionusername='.$_REQUEST['sessionusername'].'">View
 Profile  &raquo;</a></p>
 		</div>
 		</div>';

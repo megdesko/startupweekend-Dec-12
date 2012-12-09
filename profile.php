@@ -2,6 +2,10 @@
 include("./setupDb.php");
 include("./profilePage.php");
 include("./templateMaker.php");
+
+if (! $_REQUEST['sessionusername']) {
+	$_SESSION['sessionusername'] = 'drSnickerdoodle';
+}
 $link = mysql_pconnect('localhost','root','root');
 
 if (!$link) {
