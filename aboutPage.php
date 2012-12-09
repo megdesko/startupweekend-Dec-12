@@ -1,15 +1,15 @@
 <?php
 
 include('./profileMatcher.php');
-class landingPage {
-function __construct() {
-	$this->UserRow = $this->setUserRow();
-	$this->gravURL = $this->setGravURL();
+class aboutPage {
+function __construct($user1, $user2) {
+	$this->UserRow1 = $this->setUserRow($user1);
+	$this->UserRow2 = $this->setUserRow($user2);
 
 }
-function setUserRow() {
+function setUserRow($user) {
 	$sql = 'SELECT * FROM user WHERE 
-			username = "'.$_REQUEST['sessionusername'].'"';
+			username = "'.$user.'"';
 	$result = mysql_query($sql);
 	$row = mysql_fetch_assoc($result);
 	return $row;
@@ -23,7 +23,7 @@ function setGravURL($row) {
 	}
 	$default = "http://www.gravatar.com/avatar/".
 			md5(strtolower(trim('mdesko@gmail.com')));
-	$size = 120;
+	$size = 300;
 	$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
 			trim ($email))) . "?s=" . $size;
 	//$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
@@ -37,14 +37,7 @@ echo '
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
-       		<div>
-			<img src="'.$this->gravURL.'"/>
-			</div> 
 			<div class="userInfo">
-			<h3>Hello, '.$this->UserRow['first_name'].'</h3>
-        		<p>'.$this->UserRow['city'].', '.$this->UserRow['state'].' / '
-			.$this->UserRow['age'].' 
-				</p>
       </div>
       </div>
 ';
@@ -56,59 +49,38 @@ function emitCSS() {
 		}
 	</style>';
 }
-function setMatches() {
-	$sql = 'SELECT * FROM user WHERE interested_in="'.$this->UserRow['gender'].'"';
-	$result = mysql_query($sql);
-	if (!$result) {
-		echo mysql_errno() .'- '.mysql_error().'<br>';
-		echo 'Query- '.$sql.'<br>';
-		exit();
-	}	
-	while ($result and $row = mysql_fetch_assoc($result)) {
-		$this->Matches[] = $row;	
-	}
-	if (empty($this->Matches)) {
-	}	
-}
-
 function printMatches() {
-    echo '<h2>Matches...</h2>';
-	foreach ($this->Matches as $row) {
-		$matchSet = new profileMatcher($this->UserRow['user_id'],
-$row['user_id']);
+		echo '<br><br><h1>Meet '.$this->UserRow1['first_name'].' &
+'.$this->UserRow2['first_name'].'</h1><br>';
+		$matchSet = new profileMatcher($this->UserRow1['user_id'],
+$this->UserRow2['user_id']);
 		$matchSet->doMatch();
-		$charities = $matchSet->getMatchArray();
+	foreach (array($this->UserRow1, $this->UserRow2) as $row) {
+		$charities = $matchSet->setCharitySet($row['user_id']); 
+		$turnred = $matchSet->getMatchArray();
 		//print_r($charities);
 		if (! empty($charities)) {
-		if ($count % 3 ===0) {
 			echo '  <div class="row">';
-		}
 		$url = $this->setGravURL($row);
 		echo '
-        <div class="span4">
+        <div class="span6">
 			<img src="'.$url.'"/>
          <div>
-			 <h4>'.$row['username'].'</h4>
-		
-          <p>'.$row['about_me'].'</p>
-        <p>You both like: <b>'.$matchSet->printCharities().'</b></p>  
-		<p><a class="btn"
-href="./profile.php?user='.$row['username'].'&sessionusername='.$_REQUEST['sessionusername'].'">View
-Profile  &raquo;</a></p>
+			 <h2>'.$row['username'].'</h2>';
+		foreach ($charities as $c) {
+			if (in_array($c, $turnred)) {
+				echo '<span class="label label-important"><h4>&nbsp;&nbsp;&nbsp;
+'.$c.'  &nbsp;&nbsp;&nbsp;</h4></span><br><br>';
+		}
+		else {
+				echo '<span
+class="label"><h4>&nbsp;&nbsp;&nbsp;'.$c.'&nbsp;&nbsp;&nbsp;</h4></span><br><br>';
+		}		
+}
+	echo '	
 		</div>
 		</div>';
-		$count ++;
-		if ($count % 3 ===0) {
-			echo '</div>';
-		}
 	}
-	}
-	if ($count == 0) {
-		echo '<p>You have no matches at this time.  <br>
-			<b>Add a charity</b> to find more matches!</p>';
-	}
-	if ($count %3 != 0 or $count == 0) {
-		echo '</div>';
 	}
 	echo '</div>';
 }
