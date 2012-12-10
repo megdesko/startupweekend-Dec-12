@@ -72,7 +72,7 @@ function setMatches() {
 }
 
 function printMatches() {
-    echo '<h2>Matches...</h2>';
+    echo '<h2>Honey Matches:</h2>';
 	foreach ($this->Matches as $row) {
 		$matchSet = new profileMatcher($this->UserRow['user_id'],
 $row['user_id']);
