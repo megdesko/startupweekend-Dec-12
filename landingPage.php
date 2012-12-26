@@ -1,20 +1,26 @@
 <?php
-
+// included files
 include('./profileMatcher.php');
+
 class landingPage {
+
 function __construct() {
 	$this->UserRow = $this->setUserRow();
 	$this->gravURL = $this->setGravURL();
 
 }
+
 function setUserRow() {
+// gets the user info for the current user
 	$sql = 'SELECT * FROM user WHERE 
 			username = "'.$_REQUEST['sessionusername'].'"';
 	$result = mysql_query($sql);
 	$row = mysql_fetch_assoc($result);
 	return $row;
 }
+
 function setGravURL($row) {
+// sets the gravatar URL to get the user's picture
 	if (!$row) {
 		$email = $this->UserRow['email'];
 	}
@@ -26,18 +32,18 @@ function setGravURL($row) {
 	$size = 120;
 	$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
 			trim ($email))) . "?s=" . $size;
-	//$url = "http://www.gravatar.com/avatar/" . md5( strtolower(
-	//		trim ($email))) . "?d=" . urlencode($default) . "&s=" . $size;
 	return $url;
 }
 
 function makeTopBox() {
+// put current user's info in the top box of the page
 echo '
     <div class="container">
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
        		<div>
+			<!-- print the gravatar image -->
 			<img src="'.$this->gravURL.'"/>
 			</div> 
 			<div class="userInfo">
@@ -56,7 +62,10 @@ function emitCSS() {
 		}
 	</style>';
 }
+
+
 function setMatches() {
+// get the matches for this user to display them
 	$sql = 'SELECT * FROM user WHERE interested_in="'.$this->UserRow['gender'].'"';
 	$result = mysql_query($sql);
 	if (!$result) {
@@ -72,7 +81,9 @@ function setMatches() {
 }
 
 function printMatches() {
+// prints the matches for this user
     echo '<h2>Honey Matches:</h2>';
+	// show the top matches for this user
 	foreach ($this->Matches as $row) {
 		$matchSet = new profileMatcher($this->UserRow['user_id'],
 $row['user_id']);
@@ -112,28 +123,6 @@ Profile  &raquo;</a></p>
 	}
 	echo '</div>';
 }
-function printDefault() {
-echo '
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-       </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-      </div>
-';
-} //end place holder
 
 function setVarArray($tableName) {
 	try {

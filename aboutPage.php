@@ -32,17 +32,23 @@ function setGravURL($row) {
 }
 
 function makeTopBox() {
+// displays the top box that contains info about the company
 echo '
     <div class="container">
 
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
 			<div class="userInfo">
-      </div>
+      			<h2>Honeycomb: Let your actions speak for you.</h2>
+				<p>At Honeycomb, we believe that the causes you give your time
+				and energy to speak volumes about you.  Our tools will help you
+				meet people who share your values.</p>
+			</div>
       </div>
 ';
 }
 function emitCSS() {
+// this puts out additional CSS needed for this page
 	echo '<style>
 		.userInfo {
 			left-margin:300px;
@@ -50,6 +56,7 @@ function emitCSS() {
 	</style>';
 }
 function printMatches() {
+// display the two matches used for this demo page
 		echo '<br><br><h1>Meet '.$this->UserRow1['first_name'].' &
 '.$this->UserRow2['first_name'].'</h1><br>';
 		$matchSet = new profileMatcher($this->UserRow1['user_id'],
@@ -84,30 +91,9 @@ class="label"><h4>&nbsp;&nbsp;&nbsp;'.$c.'&nbsp;&nbsp;&nbsp;</h4></span><br><br>
 	}
 	echo '</div>';
 }
-function printDefault() {
-echo '
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-       </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-      </div>
-';
-} //end place holder
 
 function setVarArray($tableName) {
+// Not sure what this does here
 	try {
 		$sql = 'SELECT * FROM '.$tableName;
 		$result = mysql_query($sql);
